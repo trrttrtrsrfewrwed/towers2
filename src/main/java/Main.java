@@ -15,17 +15,18 @@ public class Main {
         CheckersBoard board = new CheckersBoard(white_positions, black_positions);
         int n = sc.nextInt();
         sc.nextLine();
-        System.out.println(n);
+        // System.out.println(n);
         for (int i = 0; i < n; ++i) {
             try {
                 board.move(sc.nextLine());
             } catch (WhiteCellException e) {
                 System.out.println("white cell");
             } catch (InvalidMoveException e) {
-                System.out.println("Invalid move");
+                System.out.println("invalid move");
             } catch (BusyCellException e) {
-                System.out.println("Busy cell");
+                System.out.println("busy cell");
             } catch (ErrorException e) {
+                System.out.println("error");
                 System.out.println(e.getMessage());
             }
         }

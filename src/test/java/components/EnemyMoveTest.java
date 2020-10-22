@@ -88,8 +88,8 @@ public class EnemyMoveTest {
 
     @Test
     public void testChangesToKing() {
-        CheckersBoard board = new CheckersBoard("b2_w", "a3_b");
-        Assertions.assertDoesNotThrow(()-> board.enemyMove(CheckerColor.BLACK, "a3_b:c1_Bw"));
+        CheckersBoard board = new CheckersBoard("b2_w d2_w", "a3_b");
+        Assertions.assertDoesNotThrow(()-> board.enemyMove(CheckerColor.BLACK, "a3_b:c1_Bw:e3_Bww"));
     }
 
     @Test
@@ -98,6 +98,6 @@ public class EnemyMoveTest {
             CheckersBoard board = new CheckersBoard("b2_w", "a3_b");
             board.enemyMove(CheckerColor.BLACK, "a3_b:c1_bw");
         });
-        Assertions.assertEquals("Doesn't changes to king", e.getMessage());
+        Assertions.assertEquals("Doesn't change to king", e.getMessage());
     }
 }

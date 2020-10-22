@@ -9,6 +9,12 @@ import java.util.Objects;
 public class Pillar {
     private ArrayDeque<Checker> checkers = new ArrayDeque<Checker>();
 
+
+    public void changeToKing() {
+        Checker last = checkers.removeLast();
+        last.is_king_ = true;
+        checkers.addLast(last);
+    }
     /**
      * Answers if this Pillar is empty or not
      * @return answer ^
@@ -38,8 +44,11 @@ public class Pillar {
      */
     @Override
     public String toString() {
-        return "{" + checkers +
-                "top}";
+        StringBuilder str = new StringBuilder();
+        for (Checker checker: checkers) {
+            str.append(checker);
+        }
+        return str.reverse().toString();
     }
 
     /**

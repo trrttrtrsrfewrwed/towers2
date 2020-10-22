@@ -6,7 +6,6 @@ import exceptions.InvalidMoveException;
 import exceptions.WhiteCellException;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Representation of CheckersBoard in Pillar Russian checkers
@@ -39,20 +38,24 @@ public class CheckersBoard {
      */
     @Override
     public String toString() {
+        return getOneColor(CheckerColor.WHITE) + "\n" + getOneColor(CheckerColor.BLACK);
+    }
+
+    private String getOneColor(CheckerColor color) {
         StringBuilder str = new StringBuilder();
-        str.append("Desk{");
-        for (int i = 0; i < 8; ++i) {
+        for (int i = 7; i >= 0; --i) {
             for (int j = 0; j < 8; ++j) {
-                str.append(" ").append(pillars[i][j]).append(" ");
+                if (pillars[i][j] != null && pillars[i][j].getColor().equals(color)) {
+                    char y_coord = (char) (j + 'a');
+                    str.append(pillars[i][j].isKing() ? Character.toUpperCase(y_coord) : y_coord);
+                    str.append(8 - i).append("_").append(pillars[i][j]).append(" ");
+                }
             }
-            str.append("\n");
         }
-        str.append('}');
         return str.toString();
     }
 
     /**
-     *
      * @param move - move in standard checkers notation
      * @throws BusyCellException
      * @throws WhiteCellException
@@ -108,7 +111,7 @@ public class CheckersBoard {
                     if (pillars[y + y_step][x + x_step].getColor().equals(color)) {
                         continue;
                     }
-                    if (inBounds(x + 2*x_step, y + 2*y_step) && !isBusy(x + 2*x_step, y + 2*y_step)) {
+                    if (inBounds(x + 2 * x_step, y + 2 * y_step) && !isBusy(x + 2 * x_step, y + 2 * y_step)) {
                         return true;
                     }
                 }
@@ -117,7 +120,14 @@ public class CheckersBoard {
         return false;
     }
 
-    private boolean IsChangesToKing(CheckerColor color, int x, int y, Pillar next_pillar) {
+
+    private static void changeToKing(int y, Pillar pillar) {
+        if ((pillar.getColor().equals(CheckerColor.WHITE) && y == 0) || (pillar.getColor().equals(CheckerColor.BLACK) && y == 7)) {
+            pillar.changeToKing();
+        }
+    }
+
+    private static boolean IsChangesToKing(CheckerColor color, int y, Pillar next_pillar) {
         if (color.equals(CheckerColor.WHITE) && y == 0) {
             return next_pillar.isKing();
         }
@@ -127,7 +137,7 @@ public class CheckersBoard {
         return true;
     }
 
-    void enemyMove(CheckerColor color, String move) throws BusyCellException, WhiteCellException, ErrorException, InvalidMoveException{
+    void enemyMove(CheckerColor color, String move) throws BusyCellException, WhiteCellException, ErrorException, InvalidMoveException {
         boolean is_hitting = false;
         String[] positions;
         if (move.contains("-")) {
@@ -156,8 +166,8 @@ public class CheckersBoard {
                 int[] next_coords = getCoords(next_pos.substring(0, 2));
                 int next_x = next_coords[0];
                 int next_y = next_coords[1];
-                if (!IsChangesToKing(color, next_x, next_y, getPillar(next_pos))) {
-                    throw new ErrorException("Doesn't changes to king");
+                if (!IsChangesToKing(color, next_y, getPillar(next_pos))) {
+                    throw new ErrorException("Doesn't change to king");
                 }
                 if (is_hitting) {
                     char symbol = next_pos.charAt(next_pos.length() - 1);
@@ -172,6 +182,7 @@ public class CheckersBoard {
                 } else {
                     NotHittingMove(x_coord, y_coord, next_x, next_y);
                 }
+                changeToKing(next_y, pillars[next_y][next_x]);
             }
         }
 
