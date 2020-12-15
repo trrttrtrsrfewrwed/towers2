@@ -1,4 +1,5 @@
 import components.CheckersBoard;
+import components.impl.CheckersBoardImpl;
 import exceptions.BusyCellException;
 import exceptions.ErrorException;
 import exceptions.InvalidMoveException;
@@ -8,28 +9,28 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-
-        String white_positions = sc.nextLine();
-        String black_positions = sc.nextLine();
-        CheckersBoard board = new CheckersBoard(white_positions, black_positions);
-        int n = sc.nextInt();
-        sc.nextLine();
-        // System.out.println(n);
-        for (int i = 0; i < n; ++i) {
-            try {
-                board.move(sc.nextLine());
-            } catch (WhiteCellException e) {
-                System.out.println("white cell");
-            } catch (InvalidMoveException e) {
-                System.out.println("invalid move");
-            } catch (BusyCellException e) {
-                System.out.println("busy cell");
-            } catch (ErrorException e) {
-                System.out.println("error");
-                System.out.println(e.getMessage());
+        try (Scanner sc = new Scanner(System.in)) {
+            String whitePositions = sc.nextLine();
+            String blackPositions = sc.nextLine();
+            CheckersBoard board = new CheckersBoardImpl(whitePositions, blackPositions);
+            while (sc.hasNext()) {
+                try {
+                    board.move(sc.nextLine());
+                } catch (WhiteCellException e) {
+                    System.out.println("white cell");
+                    return;
+                } catch (InvalidMoveException e) {
+                    System.out.println("invalid move");
+                    return;
+                } catch (BusyCellException e) {
+                    System.out.println("busy cell");
+                    return;
+                } catch (ErrorException e) {
+                    System.out.println("error");
+                    return;
+                }
             }
+            System.out.println(board.toString());
         }
-        System.out.println(board.toString());
     }
 }
