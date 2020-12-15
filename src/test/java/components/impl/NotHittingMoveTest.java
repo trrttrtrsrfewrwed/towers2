@@ -1,5 +1,8 @@
-package components;
+package components.impl;
 
+import components.Checker;
+import components.CheckerColor;
+import components.Pillar;
 import exceptions.BusyCellException;
 import exceptions.ErrorException;
 import exceptions.WhiteCellException;
@@ -11,12 +14,12 @@ public class NotHittingMoveTest {
     @Test
     public void testCorrectNotHittingMove() {
         Assertions.assertDoesNotThrow(()->{
-            CheckersBoard board = new CheckersBoard("a1_W", "");
-            board.NotHittingMove(0, 7, 3, 4);
-            Assertions.assertNull(board.pillars[7][0]);
+            CheckersBoardImpl board = new CheckersBoardImpl("a1_W", "");
+            board.notHittingMove(0, 7, 3, 4);
+            Assertions.assertNull(board.getPillars()[7][0]);
             Pillar expected_pillar = new Pillar();
             expected_pillar.pickUp(new Checker(CheckerColor.WHITE, true));
-            Assertions.assertEquals(expected_pillar, board.pillars[4][3]);
+            Assertions.assertEquals(expected_pillar, board.getPillars()[4][3]);
         });
     }
 
@@ -24,24 +27,24 @@ public class NotHittingMoveTest {
     @Test
     public void testBusyCell() {
         Assertions.assertThrows(BusyCellException.class, ()->{
-            CheckersBoard board = new CheckersBoard("a1_w b2_w", "");
-            board.NotHittingMove(0, 7, 1, 6);
+            CheckersBoardImpl board = new CheckersBoardImpl("a1_w b2_w", "");
+            board.notHittingMove(0, 7, 1, 6);
         });
     }
 
     @Test
     public void testWhiteCell() {
         Assertions.assertThrows(WhiteCellException.class, ()->{
-            CheckersBoard board = new CheckersBoard("a1_w b2_w", "");
-            board.NotHittingMove(7, 0, 7, 1);
+            CheckersBoardImpl board = new CheckersBoardImpl("a1_w b2_w", "");
+            board.notHittingMove(7, 0, 7, 1);
         });
     }
 
     @Test
     public void testImpossibleMove() {
         Exception e = Assertions.assertThrows(ErrorException.class, ()->{
-            CheckersBoard board = new CheckersBoard("a1_w b2_w", "");
-            board.NotHittingMove(7, 0, 7, 2);
+            CheckersBoardImpl board = new CheckersBoardImpl("a1_w b2_w", "");
+            board.notHittingMove(7, 0, 7, 2);
         });
         Assertions.assertEquals("Impossible move", e.getMessage());
     }
@@ -49,8 +52,8 @@ public class NotHittingMoveTest {
     @Test
     public void testKingMove() {
         Exception e = Assertions.assertThrows(ErrorException.class, ()->{
-            CheckersBoard board = new CheckersBoard("a1_w b2_w", "");
-            board.NotHittingMove(0, 7, 2, 5);
+            CheckersBoardImpl board = new CheckersBoardImpl("a1_w b2_w", "");
+            board.notHittingMove(0, 7, 2, 5);
         });
         Assertions.assertEquals("King move from non-king", e.getMessage());
     }
@@ -58,8 +61,8 @@ public class NotHittingMoveTest {
     @Test
     public void testBusyPath() {
         Exception e = Assertions.assertThrows(ErrorException.class, ()->{
-            CheckersBoard board = new CheckersBoard("a1_W b2_w", "");
-            board.NotHittingMove(0, 7, 2, 5);
+            CheckersBoardImpl board = new CheckersBoardImpl("a1_W b2_w", "");
+            board.notHittingMove(0, 7, 2, 5);
         });
         Assertions.assertEquals("Busy path", e.getMessage());
     }

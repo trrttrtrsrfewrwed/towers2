@@ -1,7 +1,6 @@
 package components;
 
 import java.util.ArrayDeque;
-import java.util.Objects;
 
 /**
  * Representation of Pillar in Pillar Russian checkers
@@ -9,10 +8,12 @@ import java.util.Objects;
 public class Pillar {
     private ArrayDeque<Checker> checkers = new ArrayDeque<Checker>();
 
-
+    /**
+     * Changes checker on the top of the pillar to king
+     */
     public void changeToKing() {
         Checker last = checkers.removeLast();
-        last.is_king_ = true;
+        last.setKing(true);
         checkers.addLast(last);
     }
     /**
@@ -56,7 +57,7 @@ public class Pillar {
      * @return answer ^
      */
     public boolean isKing() {
-        return checkers.getLast().is_king_;
+        return checkers.getLast().isKing();
     }
 
     /**
@@ -64,7 +65,7 @@ public class Pillar {
      * @return color of the Pillar
      */
     public CheckerColor getColor() {
-        return checkers.getLast().color_;
+        return checkers.getLast().getColor();
     }
 
 

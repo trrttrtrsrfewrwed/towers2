@@ -1,12 +1,5 @@
 package components;
 
-import java.util.Objects;
-
-enum CheckerColor {
-    WHITE,
-    BLACK
-}
-
 /**
  * Representation of Checker
  */
@@ -14,14 +7,14 @@ public class Checker {
     /**
      * Constructor of Checker
      * @param color - side the checker belongs to
-     * @param is_king - is a checker a king
+     * @param isKing - is a checker a king
      */
-    Checker(CheckerColor color, boolean is_king) {
-        color_ = color;
-        is_king_ = is_king;
+    public Checker(CheckerColor color, boolean isKing) {
+        this.color = color;
+        this.isKing = isKing;
     }
-    CheckerColor color_;
-    boolean is_king_;
+    private CheckerColor color;
+    private boolean isKing;
 
     /**
      *
@@ -29,7 +22,7 @@ public class Checker {
      */
     @Override
     public String toString() {
-        return (color_ == CheckerColor.WHITE? (is_king_? "W" : "w") : (is_king_? "B" : "b"));
+        return (color == CheckerColor.WHITE? (isKing ? "W" : "w") : (isKing ? "B" : "b"));
     }
 
     /**
@@ -42,7 +35,23 @@ public class Checker {
         if (this == o) return true;
         if (!(o instanceof Checker)) return false;
         Checker checker = (Checker) o;
-        return is_king_ == checker.is_king_ &&
-                color_ == checker.color_;
+        return isKing == checker.isKing &&
+                color == checker.color;
+    }
+
+    public CheckerColor getColor() {
+        return color;
+    }
+
+    public void setColor(CheckerColor color) {
+        this.color = color;
+    }
+
+    public boolean isKing() {
+        return isKing;
+    }
+
+    public void setKing(boolean king) {
+        isKing = king;
     }
 }
